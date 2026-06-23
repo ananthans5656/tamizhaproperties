@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Environment secrets — never commit these
+.env
+.env.local
+.env.production
+
+# Firebase service key — contains private credentials
+serviceAccountKey.json
+*serviceAccount*.json
+
+# OS / editor
+.DS_Store
+*.log
+.vscode/

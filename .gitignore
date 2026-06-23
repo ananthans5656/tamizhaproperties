@@ -1,0 +1,29 @@
+# macOS
+.DS_Store
+
+# Claude memory
+.claude/
+
+# Ignore everything except web version
+TamizhaAdmin/
+TamizhaUser/
+desktop/
+jdk17/
+patch_aab.py
+patch_apks.py
+
+# Node
+node_modules/
+
+# Docker uploads (keep folder, ignore contents)
+tamizha_properties_web-version.1.0/backend/uploads/*
+!tamizha_properties_web-version.1.0/backend/uploads/.gitkeep
+
+# Env files
+.env
+.env.local
+.env.production
+
+# Build output
+dist/
+build/
