@@ -66,14 +66,15 @@ async function runMigrations() {
         created_at    TIMESTAMPTZ DEFAULT NOW()
       )
     `);
-    // Seed default admin if not exists
+    // Copy existing admin accounts from users table → admins table (preserves real password hashes)
     await pool.query(`
-      INSERT INTO admins (name, email, password_hash)
-      SELECT 'Admin', 'info@tamizhaproperties.com',
-             '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'
-      WHERE NOT EXISTS (SELECT 1 FROM admins WHERE email = 'info@tamizhaproperties.com')
+      INSERT INTO admins (name, email, password_hash, created_at)
+      SELECT name, email, password_hash, created_at
+      FROM users
+      WHERE role = 'admin'
+      ON CONFLICT (email) DO NOTHING
     `);
-    console.log('Migrations: admins table ready');
+    console.log('Migrations: admins table ready — existing admin accounts copied');
   } catch (err) {
     console.error('Migration error:', err.message);
   }

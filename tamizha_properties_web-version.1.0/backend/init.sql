@@ -13,10 +13,11 @@ CREATE TABLE IF NOT EXISTS admins (
   created_at    TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Default admin account (password: Admin@123)
+-- Default admin account — change password after first login
+-- Default password: Admin@123
 INSERT INTO admins (name, email, password_hash)
 SELECT 'Admin', 'info@tamizhaproperties.com',
-       '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'
+       '$2b$10$8K1p/a0dCUnPVYMoHHFyp.3dGarONFSQJZRiS2Yf7FcZzKhqB.Xey'
 WHERE NOT EXISTS (SELECT 1 FROM admins WHERE email = 'info@tamizhaproperties.com');
 
 -- ─── users ───────────────────────────────────────────────────────────────────
