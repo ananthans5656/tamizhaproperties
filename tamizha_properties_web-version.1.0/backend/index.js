@@ -74,7 +74,9 @@ async function runMigrations() {
       WHERE role = 'admin'
       ON CONFLICT (email) DO NOTHING
     `);
-    console.log('Migrations: admins table ready — existing admin accounts copied');
+    // Remove admin accounts from users table — they now live in admins table only
+    await pool.query(`DELETE FROM users WHERE role = 'admin'`);
+    console.log('Migrations: admins table ready — admin accounts moved out of users table');
   } catch (err) {
     console.error('Migration error:', err.message);
   }

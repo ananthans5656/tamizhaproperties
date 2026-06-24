@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS users (
   password_hash TEXT,
   created_at    TIMESTAMPTZ DEFAULT NOW()
 );
+-- Note: no role column — users table is for user app only, admins are in admins table
 
 -- ─── properties ──────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS properties (
