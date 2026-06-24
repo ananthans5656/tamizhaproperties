@@ -55,6 +55,25 @@ async function runMigrations() {
         ADD COLUMN IF NOT EXISTS follow_up_date TIMESTAMP
     `);
     console.log('Migrations: leads table updated');
+
+    // Create admins table (separate from users — admin portal only)
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS admins (
+        id            SERIAL PRIMARY KEY,
+        name          VARCHAR(255),
+        email         VARCHAR(255) UNIQUE,
+        password_hash TEXT,
+        created_at    TIMESTAMPTZ DEFAULT NOW()
+      )
+    `);
+    // Seed default admin if not exists
+    await pool.query(`
+      INSERT INTO admins (name, email, password_hash)
+      SELECT 'Admin', 'info@tamizhaproperties.com',
+             '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'
+      WHERE NOT EXISTS (SELECT 1 FROM admins WHERE email = 'info@tamizhaproperties.com')
+    `);
+    console.log('Migrations: admins table ready');
   } catch (err) {
     console.error('Migration error:', err.message);
   }
@@ -79,6 +98,7 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+app.use('/api/admin/auth', require('./src/routes/adminAuth'));
 app.use('/api/auth', require('./src/routes/auth'));
 app.use('/api/otp', require('./src/routes/otp'));
 app.use('/api/leads', require('./src/routes/leads'));
@@ -87,9 +107,11 @@ app.use('/api/users', require('./src/routes/users'));
 app.use('/api/site-visits', require('./src/routes/siteVisits'));
 app.use('/api/notifications', require('./src/routes/notifications'));
 
-app.get('/api/dashboard', require('./src/middleware/auth'), require('./src/controllers/dashboardController').getStats);
+const adminAuth = require('./src/middleware/adminAuth');
 
-app.post('/api/upload', require('./src/middleware/auth'), upload.single('file'), (req, res) => {
+app.get('/api/dashboard', adminAuth, require('./src/controllers/dashboardController').getStats);
+
+app.post('/api/upload', adminAuth, upload.single('file'), (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
   const url = `/uploads/${req.file.filename}`;
   res.json({ url, filename: req.file.filename });

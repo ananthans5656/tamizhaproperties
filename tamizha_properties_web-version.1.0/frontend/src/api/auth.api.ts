@@ -13,5 +13,5 @@ export interface LoginResponse {
 
 export const authApi = {
   login: (email: string, password: string) =>
-    client.post<LoginResponse>('/auth/login', { email, password }).then(r => r.data),
+    client.post<LoginResponse>('/admin/auth/login', { email, password }).then(r => r.data),
 };

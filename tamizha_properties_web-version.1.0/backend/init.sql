@@ -4,6 +4,21 @@
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+-- ─── admins ──────────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS admins (
+  id            SERIAL PRIMARY KEY,
+  name          VARCHAR(255),
+  email         VARCHAR(255) UNIQUE,
+  password_hash TEXT,
+  created_at    TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Default admin account (password: Admin@123)
+INSERT INTO admins (name, email, password_hash)
+SELECT 'Admin', 'info@tamizhaproperties.com',
+       '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'
+WHERE NOT EXISTS (SELECT 1 FROM admins WHERE email = 'info@tamizhaproperties.com');
+
 -- ─── users ───────────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS users (
   id            SERIAL PRIMARY KEY,
@@ -11,16 +26,8 @@ CREATE TABLE IF NOT EXISTS users (
   email         VARCHAR(255) UNIQUE,
   phone         VARCHAR(20),
   password_hash TEXT,
-  role          VARCHAR(50) DEFAULT 'user',
   created_at    TIMESTAMPTZ DEFAULT NOW()
 );
-
--- Default admin account (password: Admin@123)
--- bcrypt hash for "Admin@123" with 10 rounds
-INSERT INTO users (name, email, phone, password_hash, role)
-SELECT 'Admin', 'admin@tamizhaproperties.com', '9999999999',
-       '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin'
-WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'admin@tamizhaproperties.com');
 
 -- ─── properties ──────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS properties (
@@ -47,7 +54,7 @@ CREATE TABLE IF NOT EXISTS properties (
   offer_code        TEXT,
   bank_offer        TEXT,
   partner_offer     TEXT,
-  created_by        INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  created_by        INTEGER REFERENCES admins(id) ON DELETE SET NULL,
   views_count       INTEGER DEFAULT 0,
   leads_count       INTEGER DEFAULT 0,
   created_at        TIMESTAMPTZ DEFAULT NOW(),
