@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "765016746442",
+    "project_id": "tamizhaproperties-dcdaf",
+    "storage_bucket": "tamizhaproperties-dcdaf.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:765016746442:android:b650afc8779f677ae18733",
+        "android_client_info": {
+          "package_name": "com.Tamizhaadmin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBKcMyrBPcNwX5lvLVhJp7m_xFMq-5lnk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

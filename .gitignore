@@ -4,9 +4,7 @@
 # Claude memory
 .claude/
 
-# Ignore everything except web version
-TamizhaAdmin/
-TamizhaUser/
+# Unrelated files
 desktop/
 jdk17/
 patch_aab.py
@@ -14,6 +12,26 @@ patch_apks.py
 
 # Node
 node_modules/
+
+# React Native build artifacts
+TamizhaAdmin/android/.gradle/
+TamizhaAdmin/android/app/build/
+TamizhaAdmin/android/build/
+TamizhaAdmin/android/build.log
+TamizhaAdmin/android/gradlew_output.txt
+TamizhaAdmin/ios/build/
+TamizhaAdmin/ios/Pods/
+TamizhaAdmin/android/app/src/main/assets/index.android.bundle
+TamizhaUser/android/.gradle/
+TamizhaUser/android/app/build/
+TamizhaUser/android/build/
+TamizhaUser/ios/build/
+TamizhaUser/ios/Pods/
+TamizhaUser/android/app/src/main/assets/index.android.bundle
+
+# Expo
+TamizhaAdmin/.expo/
+TamizhaUser/.expo/
 
 # Docker uploads (keep folder, ignore contents)
 tamizha_properties_web-version.1.0/backend/uploads/*
@@ -23,7 +41,3 @@ tamizha_properties_web-version.1.0/backend/uploads/*
 .env
 .env.local
 .env.production
-
-# Build output
-dist/
-build/
