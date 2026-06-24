@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 export default function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('admin@tamizhaproperties.com');
+  const [email, setEmail] = useState('info@tamizhaproperties.com');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -112,7 +112,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 className="tp-float-input"
-                placeholder="admin@tamizhaproperties.com"
+                placeholder="info@tamizhaproperties.com"
                 style={{ width: '100%', fontSize: 14 }}
               />
             </div>
